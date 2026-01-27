@@ -12,6 +12,8 @@
 ## Scope and metadata
 - Confirm base branch and head branch are correct for the diff.
 - Confirm the PR title/description matches the change.
+- Confirm any repo PR template is followed.
+- Ensure the description is comprehensive (goal statement, scope/review focus, tests, and relevant risks/rollout).
 - Identify risky areas: auth, money, data loss, migrations, concurrency, infra.
 
 ## Correctness and bugs

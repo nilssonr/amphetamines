@@ -5,10 +5,13 @@ description: Turn brainstorming outcomes or rough ideas into thorough, step-by-s
 
 # Implementation Plan
 
+Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
+
 ## Workflow
-1. Restate the goal and confirmed constraints from the brainstorming output.
+1. Restate the goal and confirmed constraints from the user or prior brainstorming output.
 2. Identify missing inputs that would change the plan (APIs, frameworks, data sources, success criteria).
-3. Before asking any questions, search the repository for answers (README, docs, config, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.
+3. Preflight scan before questions: search the repository for answers (README, docs, config, templates, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.
+   - Repo-first: if the repository already shows the choice (framework/tooling), use it and only ask for confirmation if there is conflicting evidence.
 4. Ask concise questions only if the repository does not answer them.
 5. Determine the plan filename under `<REPO_ROOT>/docs/plans/`.
    - If the user provides a name, use it.
@@ -95,3 +98,14 @@ Use this exact structure as a starting point:
 - Ensure every step has corresponding code in the file sections.
 - Ensure no file appears without code.
 - Keep the plan actionable and specific; avoid vague tasks.
+
+## Concise response default
+- In chat responses, default to 1–4 bullets or 2–5 short sentences.
+- Do not use multi-section outputs unless explicitly requested.
+- Ask at most one blocking question and stop.
+- Keep the full plan content in the plan file; avoid duplicating it in the response.
+
+## Question policy
+- Ask at most one blocking question at a time.
+- Prefer repo evidence over user preferences when the repo already dictates a choice.
+- Use questions to confirm repo-derived decisions only when evidence is conflicting or ambiguous.

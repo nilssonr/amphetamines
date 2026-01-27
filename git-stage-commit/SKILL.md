@@ -5,9 +5,12 @@ description: Stage and commit code frequently in small, meaningful batches while
 
 # Git Stage + Commit
 
+Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
+
 ## Workflow
 1. Confirm you are in a git repo and identify changed files.
-2. If you need information to decide how to scope commits, search the repo first (README, docs, config, module manifests). Prefer `rg` and cite file paths in your response.
+2. Preflight scan before questions: if you need information to decide how to scope commits, search the repo first (README, docs, config, module manifests). Prefer `rg` and cite file paths in your response.
+   - Repo-first: if the repo already dictates a choice (module name or scope), use it and only ask for confirmation if evidence conflicts.
 3. Group changes into small, meaningful batches that reflect a single intent. Do not split excessively; each commit should still make sense as a unit.
 4. Stage the batch with `git add` (or `git add -p` if needed) and review the staged diff.
 5. Compose a Conventional Commit message (scope optional). Never include emojis.
@@ -47,3 +50,13 @@ Use standard Conventional Commit types unless the repo defines a stricter list:
 - Inspect: `git status -sb`, `git diff`, `git diff --staged`
 - Stage: `git add <paths>` or `git add -p`
 - Commit: `git commit -m "type(scope): summary"`
+
+## Concise response default
+- Default to 1–4 bullets or 2–5 short sentences.
+- Do not use multi-section outputs unless explicitly requested.
+- Ask at most one blocking question and stop.
+
+## Question policy
+- Ask at most one blocking question at a time.
+- Prefer repo evidence over user preferences when the repo already dictates a choice.
+- Use questions to confirm repo-derived decisions only when evidence is conflicting or ambiguous.

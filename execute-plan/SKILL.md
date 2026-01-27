@@ -5,19 +5,23 @@ description: Execute a stored implementation plan step-by-step. Use when the use
 
 # Execute Plan
 
+Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
+
 ## Workflow
 1. Locate the plan source.
    - If the user provides a plan path, open that file.
    - If the user provides a plan in the conversation, use it as the source of truth (offer to persist it under docs/plans/).
    - Otherwise, search `docs/plans/*.md` and ask the user to pick a plan if more than one exists.
    - If no plan exists, stop and ask whether to create one (use the implementation-plan skill) or request the plan text.
-2. Read the plan end-to-end and restate:
+2. Read the plan end-to-end and briefly summarize (1–4 bullets):
    - Goals and non-goals
    - Step-by-step plan
    - Files to touch
    - Testing/verification requirements
 3. Validate the plan against the repo.
    - If a referenced file, API, or dependency does not exist, or a step conflicts with the repo, stop and ask for clarification.
+   - Repo-first: if the repo already dictates a choice (framework/tooling), use it and only ask for confirmation if evidence conflicts.
+   - Preflight scan before questions: check repo docs, configs, templates, scripts, and conventions; cite paths in your response.
 4. Split the plan into delivery chunks.
    - Prefer 1–3 plan steps per chunk.
    - Each chunk must be testable and end with a commit.
@@ -52,11 +56,25 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 - Stage only the files touched by the chunk.
 - Use Conventional Commit messages. If the git-stage-commit skill is available, follow it.
 
+## PR hygiene (required for PR path)
+- Before `gh pr create`, locate any PR template in the target repo and follow it.
+  - Common locations: `.github/PULL_REQUEST_TEMPLATE.md`, `.github/pull_request_template.md`, `.github/pull_request_template/`.
+- Ensure the description is comprehensive and reduces reviewer cognitive load.
+  - Start with a clear goal statement: `This PR aims to ...`.
+  - Explain what feature it implements or issue it resolves.
+  - Summarize scope of changes and what reviewers should focus on.
+  - List tests/verification run and expected behavior changes.
+  - Call out risks, migrations, or rollout notes when relevant.
+  - Include screenshots/logs for UI or behavioral changes when applicable.
+- If required information is missing, stop and ask the user before creating the PR.
+  - Ask only one missing-info question at a time.
+
 ## Worktree + branch lifecycle
 - Always work inside the new worktree; do not edit the main working tree.
 - Default to `main` as the base branch. If the repo default is different, detect it and use that.
 - If the user selects PR:
   - Push the branch to `origin`.
+  - Apply PR hygiene requirements (template + comprehensive description) before `gh pr create`.
   - Require `gh pr create`; if `gh` is missing or unauthenticated, stop and ask the user to fix it.
   - Check GitHub Actions/PR checks:
     - If checks exist, they must pass before any PR merge.
@@ -93,6 +111,16 @@ If the plan needs to change to fit the repo:
 - Tests/validation run and results
 - Commit message
 - Next chunk to execute
+
+## Concise response default
+- Default to 1–4 bullets or 2–5 short sentences.
+- Do not use multi-section outputs unless explicitly requested.
+- Ask at most one blocking question and stop.
+
+## Question policy
+- Ask at most one blocking question at a time.
+- Prefer repo evidence over user preferences when the repo already dictates a choice.
+- Use questions to confirm repo-derived decisions only when evidence is conflicting or ambiguous.
 
 ## Finalization prompt (required)
 After the last chunk, ask the user to choose:
