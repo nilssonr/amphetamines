@@ -35,6 +35,7 @@
 - Match existing architecture, naming, and conventions.
 - Avoid duplicate logic if similar code exists.
 - Ensure config, feature flags, or toggles follow existing patterns.
+- If `.editorconfig` exists, verify adherence (formatting, indentation, line endings).
 
 ## Tests and verification
 - Confirm tests cover new behavior and edge cases.
