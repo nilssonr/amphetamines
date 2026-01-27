@@ -58,6 +58,9 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 - If the user selects PR:
   - Push the branch to `origin`.
   - Require `gh pr create`; if `gh` is missing or unauthenticated, stop and ask the user to fix it.
+  - Check GitHub Actions/PR checks:
+    - If checks exist, they must pass before any PR merge.
+    - If checks are failing or pending, stop and ask whether to wait or to systematically debug.
   - After confirmation, delete the local branch and remove the worktree.
 - If the user selects local merge:
   - Rebase the branch onto the default branch, then fast-forward the default branch to the rebased HEAD.
@@ -72,6 +75,12 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 - The plan requires a framework, dependency, or tool not present in the repo.
 - A step would require skipping the TDD loop in a code repository.
 - Unable to determine default branch or worktree creation fails.
+- User requests PR merge while required checks are failing or pending.
+
+## Systematic debug option
+If CI checks fail or are flaky:
+- Ask the user whether to start a systematic debug flow.
+- If a debug skill is available, use it; otherwise offer to create a dedicated skill for CI debugging.
 
 ## Plan drift handling
 If the plan needs to change to fit the repo:
