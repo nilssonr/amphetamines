@@ -10,7 +10,8 @@ description: Thorough GitHub pull request review from a PR URL, including diff a
 
 ## Workflow
 1. Resolve PR metadata.
-   - Prefer GitHub CLI: `gh pr view <url> --json number,title,baseRefName,headRefName,baseRepository,headRepository,files,commits,author,createdAt`.
+   - Prefer GitHub CLI: `gh pr view <url> --json number,title,baseRefName,headRefName,repository,headRepository,files,commits,author,createdAt`.
+   - If `repository` is unavailable, parse the PR URL to extract owner/repo/number.
    - If `gh` is unavailable, parse the PR URL to extract owner/repo/number. Ask the user to provide one of: (a) `gh` access, (b) a patch/diff file, or (c) the base branch name plus the head branch or commit SHA.
 2. Fetch the correct diff against the target branch.
    - Use `gh pr diff <url>` to obtain the unified diff against the PR base.

@@ -45,7 +45,33 @@ cleanup() {
 }
 trap cleanup EXIT
 
-base_repo=$(gh pr view "$pr_url" --json baseRepository --jq '.baseRepository.nameWithOwner')
+parse_pr_base_repo() {
+  local url="$1"
+  url="${url%%\#*}"
+  url="${url%%\?*}"
+
+  if [[ $url =~ github\.com[:/]+([^/]+)/([^/]+)/pull/([0-9]+) ]]; then
+    echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%%.git}"
+    return 0
+  fi
+  if [[ $url =~ github\.com[:/]+([^/]+)/([^/]+) ]]; then
+    echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%%.git}"
+    return 0
+  fi
+  return 1
+}
+
+base_repo=""
+if base_repo=$(gh pr view "$pr_url" --json repository --jq '.repository.nameWithOwner' 2>/dev/null); then
+  :
+fi
+if [[ -z $base_repo || $base_repo == "null" ]]; then
+  base_repo="$(parse_pr_base_repo "$pr_url" || true)"
+fi
+if [[ -z $base_repo ]]; then
+  echo "error: unable to resolve base repository from PR URL or gh" >&2
+  exit 1
+fi
 base_ref=$(gh pr view "$pr_url" --json baseRefName --jq '.baseRefName')
 
 repo_dir="$review_dir/repo"

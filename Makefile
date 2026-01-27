@@ -5,7 +5,7 @@ SKILL_DIRS := $(sort $(patsubst %/,%,$(dir $(shell find . -maxdepth 2 -name SKIL
 SKILL_NAMES := $(notdir $(SKILL_DIRS))
 PACKAGE_TARGETS := $(addprefix $(DIST_DIR)/,$(addsuffix .skill,$(SKILL_NAMES)))
 
-.PHONY: list package install clean
+.PHONY: list package install uninstall clean
 
 list:
 	@echo "Skills:" $(SKILL_NAMES)
@@ -20,13 +20,20 @@ $(DIST_DIR)/%.skill: %/SKILL.md | $(DIST_DIR)
 package: $(PACKAGE_TARGETS)
 	@echo "Packaged:" $(PACKAGE_TARGETS)
 
-install:
+install: package
 	@mkdir -p $(SKILLS_HOME)
 	@for dir in $(SKILL_DIRS); do \
 		name=$$(basename $$dir); \
 		rsync -a --exclude '.git' --exclude 'dist' --exclude '*.skill' $$dir/ $(SKILLS_HOME)/$$name/; \
 	done
 	@echo "Installed to" $(SKILLS_HOME)
+
+uninstall:
+	@for dir in $(SKILL_DIRS); do \
+		name=$$(basename $$dir); \
+		rm -rf $(SKILLS_HOME)/$$name; \
+	done
+	@echo "Removed from" $(SKILLS_HOME)
 
 clean:
 	@rm -rf $(DIST_DIR)
