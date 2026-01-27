@@ -55,6 +55,7 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 - Commit after each chunk is complete and verified.
 - Stage only the files touched by the chunk.
 - Use Conventional Commit messages. If the git-stage-commit skill is available, follow it.
+ - If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
 
 ## PR hygiene (required for PR path)
 - Before `gh pr create`, locate any PR template in the target repo and follow it.

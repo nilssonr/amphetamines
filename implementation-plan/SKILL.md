@@ -18,6 +18,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
    - Otherwise use `YYYY-MM-DD-<kebab-title>.md` (ISO date).
 6. Ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
 7. Write a Markdown plan file with the required sections and code blocks per file.
+8. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
 
 ## Required content
 Include all sections below, in this order. Keep prose clear and action-oriented.

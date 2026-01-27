@@ -1,6 +1,6 @@
 ---
 name: git-stage-commit
-description: Stage and commit code frequently in small, meaningful batches while implementing a plan, or when the user requests commits (e.g., "please commit these changes"). Use to run git status/diff, stage appropriate files, and create Conventional Commit messages with optional scopes.
+description: Stage and commit code in small, meaningful batches while implementing a plan, or whenever the user requests commits (even if combined with other tasks like pushing). Use to run git status/diff, stage appropriate files, and create Conventional Commit messages with optional scopes.
 ---
 
 # Git Stage + Commit
@@ -8,6 +8,7 @@ description: Stage and commit code frequently in small, meaningful batches while
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+0. If the user requested a commit as part of a larger request, complete the commit workflow first, then return to the remaining tasks (e.g., push).
 1. Confirm you are in a git repo and identify changed files.
 2. Preflight scan before questions: if you need information to decide how to scope commits, search the repo first (README, docs, config, module manifests). Prefer `rg` and cite file paths in your response.
    - Repo-first: if the repo already dictates a choice (module name or scope), use it and only ask for confirmation if evidence conflicts.
@@ -19,7 +20,8 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 
 ## When to commit
 - During implementation, after completing a coherent change or step.
-- When the user asks to commit (e.g., "please commit these changes we've made").
+- When the user asks to commit (e.g., "please commit these changes we've made"), even if other tasks are requested too.
+  - If the user also asked to push, push only after this workflow completes.
 
 ## Conventional Commit rules
 - Format: `type(scope): summary` or `type: summary` when scope is not reasonable.
