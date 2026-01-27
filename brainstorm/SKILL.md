@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Requirements gathering and option exploration only when the user explicitly asks to brainstorm/discuss alternatives or expresses uncertainty (e.g., "let's brainstorm", "I'm not sure", "maybe we can", "should we perhaps"). Do not use when the user provides explicit requirements, directives, or corrections.
+description: Requirements gathering and option exploration only when the user explicitly asks to brainstorm/discuss alternatives or expresses uncertainty/hedging (e.g., "let's brainstorm", "I'm not sure", "maybe we can", "perhaps", "should we perhaps"). Do not use when the user provides explicit requirements, directives, or corrections.
 ---
 
 # Brainstorm
@@ -11,6 +11,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 0. Triage before brainstorming.
    - If the user provides explicit requirements, directives, or corrections, do **not** run a full brainstorm.
    - Instead, acknowledge the requirement and propose concrete edits or next steps in a concise response.
+   - Do **not** modify the repo during brainstorming (no apply_patch, no file writes, no commands that change files).
 1. Restate the goal and the known constraints (confirmed only).
 2. Identify ambiguity that blocks progress.
    - If the request is vague, stop and ask focused clarifying questions.
@@ -35,6 +36,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 ## Hard Stops
 - If it is impossible to proceed without assumptions (e.g., language, framework, libraries, APIs, integrations), stop and ask for clarification.
 - If the user is vague about goals, users, data, or success criteria, stop and ask for details.
+- If the user asks to implement changes, stop and ask whether they want a plan first; do not edit files.
 
 ## Response format
 If clarification is required, only ask questions and wait for answers.

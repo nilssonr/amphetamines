@@ -8,6 +8,9 @@ description: Execute a stored implementation plan step-by-step. Use when the use
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+0. Confirm explicit approval to execute a specific plan.
+   - If the user has not explicitly approved execution, stop and ask for approval.
+   - If multiple plans exist, ask which one to execute before proceeding.
 1. Locate the plan source.
    - If the user provides a plan path, open that file.
    - If the user provides a plan in the conversation, use it as the source of truth (offer to persist it under docs/plans/).
@@ -90,6 +93,7 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 
 ## Hard stops (must ask the user)
 - Plan is missing, ambiguous, or contradicts repository reality.
+- No explicit approval to execute the plan.
 - Tests are already failing before changes (do not proceed until resolved).
 - The plan requires a framework, dependency, or tool not present in the repo.
 - A step would require skipping the TDD loop in a code repository.

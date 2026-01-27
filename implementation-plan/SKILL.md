@@ -13,12 +13,19 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 3. Preflight scan before questions: search the repository for answers (README, docs, config, templates, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.
    - Repo-first: if the repository already shows the choice (framework/tooling), use it and only ask for confirmation if there is conflicting evidence.
 4. Ask concise questions only if the repository does not answer them.
-5. Determine the plan filename under `<REPO_ROOT>/docs/plans/`.
+5. Decide whether to persist the plan.
+   - Default: **do not** write files. Return the plan in chat only.
+   - Persist to `docs/plans/` **only** when the user explicitly asks to save it in the repo.
+6. If persisting, determine the plan filename under `<REPO_ROOT>/docs/plans/`.
    - If the user provides a name, use it.
    - Otherwise use `YYYY-MM-DD-<kebab-title>.md` (ISO date).
-6. Ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
-7. Write a Markdown plan file with the required sections and code blocks per file.
-8. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
+7. If persisting, ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
+8. If persisting, write the Markdown plan file with the required sections and code blocks per file.
+9. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
+
+## Repository modification rules
+- Do **not** modify existing code or config during planning.
+- The **only** allowed repo change in this skill is creating a plan file, and only with explicit user approval to persist it.
 
 ## Required content
 Include all sections below, in this order. Keep prose clear and action-oriented.
@@ -45,7 +52,7 @@ Include all sections below, in this order. Keep prose clear and action-oriented.
 - If a required code detail is unclear, stop and ask questions; do not invent APIs or data.
 
 ## Default plan filename
-- If no filename is provided, create:
+- If persisting and no filename is provided, create:
   - `docs/plans/YYYY-MM-DD-<kebab-title>.md`
 
 ## Plan template
@@ -102,9 +109,10 @@ Use this exact structure as a starting point:
 
 ## Concise response default
 - In chat responses, default to 1–4 bullets or 2–5 short sentences.
-- Do not use multi-section outputs unless explicitly requested.
+- If the plan is not being persisted, include the full plan in chat and keep extra commentary minimal.
+- Do not use multi-section outputs unless explicitly requested beyond the plan content.
 - Ask at most one blocking question and stop.
-- Keep the full plan content in the plan file; avoid duplicating it in the response.
+- If the plan is persisted, keep the full plan content in the plan file; avoid duplicating it in the response.
 
 ## Question policy
 - Ask at most one blocking question at a time.
