@@ -31,7 +31,7 @@ Start every response with: "Using brainstorm" followed by a blank line.
    - Draft non-functional requirements (performance, reliability, security, UX, timeline).
    - Define in-scope and out-of-scope.
    - List open questions or risks that still need answers.
-7. If requirements are clear enough to proceed, present the two-option prompt (see Response format).
+7. If requirements are clear enough to proceed, respond with only the two-option prompt (see Response format) and stop.
    - Do not add any other content at this stage.
 8. Gate to planning **only if the user asked to plan**.
    - Otherwise, end after providing the requested guidance or edits.
@@ -45,21 +45,25 @@ Start every response with: "Using brainstorm" followed by a blank line.
 If clarification is required, only ask questions and wait for answers.
 - Use a numbered list only when asking multiple questions; otherwise ask a single question plainly.
 - Ask at most one blocking question; do not ask preference questions when the repo already indicates the answer.
-If the user provided explicit requirements or corrections, respond concisely in this order:
-1. Acknowledge and restate the requirement (1–2 sentences).
-2. Proposed skill edits or guidance (short bullets).
-3. Offer to implement the changes (single question).
-Otherwise, respond in this order:
-1. Goal recap
-2. Constraints (confirmed only)
-3. Options with tradeoffs (only if requested)
-4. Draft requirements (Must/Should/Could) (only if needed)
-5. Scope (In / Out) (only if needed)
-6. Open questions (only if needed)
-7. If requirements are clear enough to proceed, end with exactly this two-option prompt and nothing else:
-   1) Create a plan → invoke the implementation-plan skill.
-   2) Implement immediately → invoke the execute-plan skill, using the synthesized requirements from the brainstorming session as the plan input (not a plan file).
-8. Next-step prompt (only if planning was requested)
+If the user provided explicit requirements or corrections:
+- If requirements are clear enough to proceed, respond with only the two-option prompt below and nothing else.
+- Otherwise, respond concisely in this order:
+  1. Acknowledge and restate the requirement (1–2 sentences).
+  2. Proposed skill edits or guidance (short bullets).
+  3. One blocking question to resolve remaining ambiguity.
+Otherwise:
+- If requirements are clear enough to proceed, respond with only the two-option prompt below and nothing else.
+- Otherwise, respond in this order:
+  1. Goal recap
+  2. Constraints (confirmed only)
+  3. Options with tradeoffs (only if requested)
+  4. Draft requirements (Must/Should/Could) (only if needed)
+  5. Scope (In / Out) (only if needed)
+  6. Open questions (only if needed)
+  7. Next-step prompt (only if planning was requested)
+Two-option prompt (use only when requirements are clear enough to proceed; must be the only content):
+1) Create a plan → invoke the implementation-plan skill.
+2) Implement immediately → invoke the execute-plan skill, using the synthesized requirements from the brainstorming session as the plan input (not a plan file).
 
 ## Concise response default
 - Default to 1–4 bullets or 2–5 short sentences.
