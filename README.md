@@ -35,6 +35,7 @@ All skills announce themselves by starting responses with `Using <skill-name>`.
 | `systematic-debugging` | Four-phase root-cause debugging flow for bugs and failures. |
 | `verification-before-completion` | Requires fresh verification evidence before completion claims. |
 | `testing-anti-patterns` | Prevents mock abuse and test-only production changes. |
+| `test-driven-development` | Test-first (red-green-refactor) workflow and exceptions guidance. |
 
 ## Workflow (end-to-end)
 

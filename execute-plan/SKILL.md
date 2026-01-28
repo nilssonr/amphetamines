@@ -42,6 +42,7 @@ Start every response with: "Using execute-plan".
    3) Discard all changes, then use worktree-cleanup to clean up.
 
 ## TDD loop (default for code repositories)
+- For deeper TDD guidance and rationale, use the test-driven-development skill.
 - Before writing production code, create or update tests for the chunk.
 - Run tests to confirm a failure tied to the new behavior. If the test passes unexpectedly, fix the test until it fails for the right reason.
 - Implement the smallest change to pass the test.
@@ -53,6 +54,7 @@ Skip TDD only for:
 - Configuration-only repos (no executable code)
 - Kubernetes manifests / infrastructure-only repos
 - Documentation-only repos
+- Simple script-only repos where tests are disproportionate (single-file change, small surface area, no branching business logic, no external integrations)
 
 For exceptions, run the best available validation step (lint, schema checks, `kubectl` dry-run, `make validate`, etc.). If no validation is defined, stop and ask for the preferred verification approach.
 

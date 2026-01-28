@@ -34,15 +34,17 @@ Start every response with: "Using implementation-plan".
 - When persisting, create the plan file inside the worktree created by `worktree-setup`.
  
 ## TDD requirement
-- The plan must be **strictly TDD-driven**.
+- For deeper TDD guidance and rationale, use the test-driven-development skill.
+- The plan must be **strictly TDD-driven**, unless a documented TDD exception applies.
 - For every implementation step, specify:
   1) the **test** to write (and exact file change),
   2) the **test command** to run and the **expected failing outcome**,
   3) the **implementation change** to make the test pass,
   4) the **re-run** of tests to confirm pass (with **expected passing output**),
   5) the **commit** (exact git commands).
-- Do not plan implementation work without an explicit preceding failing test.
-- If the test tooling or commands are unclear from the repo, stop and ask; do not invent commands or outputs.
+- Do not plan implementation work without an explicit preceding failing test, unless a TDD exception applies.
+- TDD exceptions mirror execute-plan: config-only, infra-only (e.g., Kubernetes manifests), docs-only, and simple script-only changes where tests are disproportionate (single-file change, small surface area, no branching business logic, no external integrations).
+- For exceptions, replace test steps with the best available verification command (lint, schema check, dry-run, or deterministic invocation). If verification is unclear from the repo, stop and ask; do not invent commands or outputs.
 - When proposing tests or mocks, apply the testing-anti-patterns skill before finalizing the plan.
 
 ## Required content
