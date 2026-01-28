@@ -108,9 +108,12 @@ Return a single markdown block with these sections (headings, with blank lines b
 - Missing Info
 - Required Actions
 - Suggested Follow-Ups
+Start the block with a single line: "Using review".
 
 Markdown template:
 ```markdown
+Using review
+
 ### Decision
 BLOCK | CHANGES_REQUIRED | APPROVE
 

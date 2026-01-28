@@ -8,6 +8,7 @@ description: Create isolated git worktrees and branches for tasks. Use when a wo
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+Start every response with: "Using worktree-setup".
 0. Confirm intent and context.
    - If a task/plan title is not provided, ask for a short topic and change type (feat/fix/chore).
    - If the repo already defines a worktree path or naming convention, use it.
@@ -15,6 +16,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
    - Prefer the remote default branch when available (e.g., `git symbolic-ref refs/remotes/origin/HEAD`).
    - If you cannot determine the base branch, stop and ask the user to specify it.
 2. Create the worktree + branch.
+   - Prefer `scripts/worktree_setup.sh` for deterministic setup.
    - Fetch latest refs before creating the branch.
    - Derive a short branch name using Conventional Commit style: `<type>/<kebab-topic>`.
    - Create a sibling worktree directory (e.g., `../wt-<topic>`), unless the repo already specifies a path.

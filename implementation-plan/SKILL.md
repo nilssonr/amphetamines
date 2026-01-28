@@ -8,6 +8,7 @@ description: Turn brainstorming outcomes or rough ideas into thorough, step-by-s
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+Start every response with: "Using implementation-plan".
 1. Restate the goal and confirmed constraints from the user or prior brainstorming output.
 2. Identify missing inputs that would change the plan (APIs, frameworks, data sources, success criteria).
 3. Preflight scan before questions: search the repository for answers (README, docs, config, templates, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.
@@ -19,8 +20,9 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
    - If the user provides a name, use it.
    - Otherwise use `YYYY-MM-DD-<kebab-title>.md` (ISO date).
 7. Ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
-8. Write the Markdown plan file with the required sections and code blocks per file.
-9. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
+8. Prefer `scripts/init_plan.sh` to scaffold the plan file, then fill in all required sections.
+9. Write the Markdown plan file with the required sections and code blocks per file.
+10. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
 
 ## Repository modification rules
 - Do **not** modify existing code or config during planning.

@@ -8,6 +8,7 @@ description: Use for bugs, test failures, build/CI failures, unexpected behavior
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+Start every response with: "Using systematic-debugging".
 0. Triage and scope.
    - If a language-specific triage skill clearly applies, use it first, then continue here if root cause is still unclear.
    - Preflight scan before questions: check README/docs/config/tests to find how to reproduce and how to run tests; cite file paths used.

@@ -8,6 +8,7 @@ description: Execute a stored implementation plan step-by-step. Use when the use
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+Start every response with: "Using execute-plan".
 0. Confirm explicit approval to execute a specific plan.
    - If the user has not explicitly approved execution, stop and ask for approval.
    - If multiple plans exist, ask which one to execute before proceeding.
@@ -33,6 +34,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
    - Capture and retain the outputs for handoff: base branch, worktree path, branch name.
    - If the skill is unavailable, stop and ask how to proceed.
 6. Execute each chunk with TDD (default) and commit.
+   - Before claiming a chunk is complete or tests are passing, use the verification-before-completion skill to run and report fresh verification evidence.
 7. After completing the plan, ask the user to choose exactly one finalization path:
    1) Push branch to remote and open a PR using `gh pr create`, then use worktree-cleanup to clean up.
    2) Merge locally to `main` (or repo default branch) using rebase, then use worktree-cleanup to clean up.
@@ -128,6 +130,7 @@ If the plan needs to change to fit the repo:
 - Tests/validation run and results
 - Commit message
 - Next chunk to execute
+ - If a completion claim is made, include verification evidence per verification-before-completion.
 
 ## Concise response default
 - Default to 1–4 bullets or 2–5 short sentences.

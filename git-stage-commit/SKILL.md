@@ -8,6 +8,7 @@ description: Stage and commit code in small, meaningful batches while implementi
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
+Start every response with: "Using git-stage-commit".
 0. If the user requested a commit as part of a larger request, complete the commit workflow first, then return to the remaining tasks (e.g., push).
 1. Confirm you are in a git repo and identify changed files.
 2. Preflight scan before questions: if you need information to decide how to scope commits, search the repo first (README, docs, config, module manifests). Prefer `rg` and cite file paths in your response.
