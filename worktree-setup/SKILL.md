@@ -10,7 +10,9 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 ## Workflow
 Start every response with: "Using worktree-setup" followed by a blank line.
 0. Confirm intent and context.
-   - If a task/plan title is not provided, ask for a short topic and change type (feat/fix/chore).
+   - Infer a short topic and change type from the user request or plan title.
+   - Default change type to `feat` unless the request is clearly a bug fix (`fix`) or maintenance (`chore`).
+   - Only ask a blocking question if you cannot infer a reasonable topic.
    - If the repo already defines a worktree path or naming convention, use it.
 1. Determine the base branch.
    - Prefer the remote default branch when available (e.g., `git symbolic-ref refs/remotes/origin/HEAD`).
@@ -28,7 +30,8 @@ Start every response with: "Using worktree-setup" followed by a blank line.
    - Provide: base branch, worktree path, branch name.
 
 ## Required inputs
-- Task topic and change type (feat/fix/chore), unless already provided.
+- Task topic (infer if possible; only ask if you cannot infer).
+- Change type (infer; default to `feat` when unclear).
 - Base branch (or allow detection).
 - Worktree path if the repo mandates one.
 

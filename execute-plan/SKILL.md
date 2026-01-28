@@ -17,6 +17,7 @@ Start every response with: "Using execute-plan" followed by a blank line.
    - If the user provides a plan in the conversation, use it as the source of truth (offer to persist it under docs/plans/).
    - Otherwise, search `docs/plans/*.md` and ask the user to pick a plan if more than one exists.
    - If no plan exists, stop and ask whether to create one (use the implementation-plan skill) or request the plan text.
+   - If a plan file is created or updated under `docs/plans/` during execution, ensure it is tracked and committed (prefer its own initial commit before code changes).
 2. Read the plan end-to-end and briefly summarize (1–4 bullets):
    - Goals and non-goals
    - Step-by-step plan
@@ -26,6 +27,7 @@ Start every response with: "Using execute-plan" followed by a blank line.
    - If a referenced file, API, or dependency does not exist, or a step conflicts with the repo, stop and ask for clarification.
    - Repo-first: if the repo already dictates a choice (framework/tooling), use it and only ask for confirmation if evidence conflicts.
    - Preflight scan before questions: check repo docs, configs, templates, scripts, and conventions; cite paths in your response.
+   - If the plan touches `.ts`/`.tsx` files or TypeScript config, invoke the typescript-best-practices skill and follow it for all TS changes.
 4. Split the plan into delivery chunks.
    - Prefer 1–3 plan steps per chunk.
    - Each chunk must be testable and end with a commit.
@@ -61,6 +63,7 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 ## Commit rules
 - Commit after each chunk is complete and verified.
 - Stage only the files touched by the chunk.
+- Always include any `docs/plans/*.md` created or updated by this execution in a commit (prefer a dedicated initial commit).
 - Use Conventional Commit messages. If the git-stage-commit skill is available, follow it.
  - If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
 
