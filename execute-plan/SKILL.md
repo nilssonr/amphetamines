@@ -28,6 +28,7 @@ Start every response with: "Using execute-plan" followed by a blank line.
    - Repo-first: if the repo already dictates a choice (framework/tooling), use it and only ask for confirmation if evidence conflicts.
    - Preflight scan before questions: check repo docs, configs, templates, scripts, and conventions; cite paths in your response.
    - If the plan touches `.ts`/`.tsx` files or TypeScript config, invoke the typescript-best-practices skill and follow it for all TS changes.
+   - If the plan touches Markdown documentation (`.md`), invoke the markdown-style-guide skill and follow it for all Markdown changes.
 4. Split the plan into delivery chunks.
    - Prefer 1–3 plan steps per chunk.
    - Each chunk must be testable and end with a commit.

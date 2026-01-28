@@ -37,6 +37,7 @@ All skills announce themselves by starting responses with `Using <skill-name>`.
 | `testing-anti-patterns` | Prevents mock abuse and test-only production changes. |
 | `test-driven-development` | Test-first (red-green-refactor) workflow and exceptions guidance. |
 | `typescript-best-practices` | Applies Google TypeScript Style Guide best practices for TS/TSX code. |
+| `markdown-style-guide` | Applies Markdown style guide best practices for documentation. |
 
 ## Workflow (end-to-end)
 
@@ -52,6 +53,7 @@ All skills announce themselves by starting responses with `Using <skill-name>`.
    - Follow the plan step-by-step with TDD.
    - Invoke `testing-anti-patterns` when tests or mocks are involved.
    - Apply `typescript-best-practices` when changing TypeScript/TSX code.
+   - Apply `markdown-style-guide` when changing Markdown documentation.
    - Use `verification-before-completion` before claiming any step is done.
 6. **Commit coherently**
    - `execute-plan` uses `git-stage-commit` for Conventional Commits per chunk.

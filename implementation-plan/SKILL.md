@@ -13,6 +13,7 @@ Start every response with: "Using implementation-plan" followed by a blank line.
 2. Identify missing inputs that would change the plan (APIs, frameworks, data sources, success criteria).
 3. Preflight scan before questions: search the repository for answers (README, docs, config, templates, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.
    - Repo-first: if the repository already shows the choice (framework/tooling), use it and only ask for confirmation if there is conflicting evidence.
+   - If the plan touches Markdown documentation (`.md`), invoke the markdown-style-guide skill and follow it for all Markdown guidance in the plan.
 4. Ask concise questions only if the repository does not answer them.
 5. Persist the plan by default.
    - Persist to `docs/plans/` unless the user explicitly asks for a chat-only plan.
