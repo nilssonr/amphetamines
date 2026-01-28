@@ -31,7 +31,9 @@ Start every response with: "Using brainstorm" followed by a blank line.
    - Draft non-functional requirements (performance, reliability, security, UX, timeline).
    - Define in-scope and out-of-scope.
    - List open questions or risks that still need answers.
-7. Gate to planning **only if the user asked to plan**.
+7. If requirements are clear enough to proceed, present the two-option prompt (see Response format).
+   - Do not add any other content at this stage.
+8. Gate to planning **only if the user asked to plan**.
    - Otherwise, end after providing the requested guidance or edits.
 
 ## Hard Stops
@@ -54,7 +56,10 @@ Otherwise, respond in this order:
 4. Draft requirements (Must/Should/Could) (only if needed)
 5. Scope (In / Out) (only if needed)
 6. Open questions (only if needed)
-7. Next-step prompt (only if planning was requested)
+7. If requirements are clear enough to proceed, end with exactly this two-option prompt and nothing else:
+   1) Create a plan → invoke the implementation-plan skill.
+   2) Implement immediately → invoke the execute-plan skill, using the synthesized requirements from the brainstorming session as the plan input (not a plan file).
+8. Next-step prompt (only if planning was requested)
 
 ## Concise response default
 - Default to 1–4 bullets or 2–5 short sentences.
