@@ -34,3 +34,6 @@ This repo defines Codex skills that enforce consistent, safe, and high-quality w
 - Keep instructions explicit; spell out defaults and fallbacks.
 - Prefer objective enforcement (formatters, tests, validation commands).
 - When modifying a skill, update its scripts and references if impacted.
+- When creating, deleting, renaming, or changing the purpose of a skill, update `README.md`:
+  - Add/remove/rename the entry in the Skill catalog table.
+  - Update the Workflow section if the skill affects the end-to-end flow.
