@@ -16,17 +16,22 @@ Start every response with: "Using implementation-plan".
 4. Ask concise questions only if the repository does not answer them.
 5. Persist the plan by default.
    - Persist to `docs/plans/` unless the user explicitly asks for a chat-only plan.
-6. Determine the plan filename under `<REPO_ROOT>/docs/plans/`.
+6. If persisting, create a worktree before writing the plan file.
+   - Use `worktree-setup` with change type `chore` and topic derived from the plan title, unless the user specifies otherwise.
+   - Create the plan file inside the worktree, not the main working tree.
+   - If worktree setup fails or is unavailable, stop and ask how to proceed.
+7. Determine the plan filename under `<REPO_ROOT>/docs/plans/`.
    - If the user provides a name, use it.
    - Otherwise use `YYYY-MM-DD-<kebab-title>.md` (ISO date).
-7. Ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
-8. Prefer `scripts/init_plan.sh` to scaffold the plan file, then fill in all required sections.
-9. Write the Markdown plan file with the required sections and code blocks per file.
-10. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
+8. Ensure `<REPO_ROOT>/docs/plans/` exists; create it if needed.
+9. Prefer `scripts/init_plan.sh` to scaffold the plan file, then fill in all required sections.
+10. Write the Markdown plan file with the required sections and code blocks per file.
+11. If the user explicitly requests a commit (with or without a push), invoke the git-stage-commit skill and let it drive the commit workflow first.
 
 ## Repository modification rules
 - Do **not** modify existing code or config during planning.
 - The **only** allowed repo change in this skill is creating a plan file in `docs/plans/`.
+- When persisting, create the plan file inside the worktree created by `worktree-setup`.
  
 ## TDD requirement
 - The plan must be **strictly TDD-driven**.
@@ -38,6 +43,7 @@ Start every response with: "Using implementation-plan".
   5) the **commit** (exact git commands).
 - Do not plan implementation work without an explicit preceding failing test.
 - If the test tooling or commands are unclear from the repo, stop and ask; do not invent commands or outputs.
+- When proposing tests or mocks, apply the testing-anti-patterns skill before finalizing the plan.
 
 ## Required content
 Include all sections below, in this order. Keep prose clear and action-oriented.

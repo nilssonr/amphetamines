@@ -1,6 +1,6 @@
-# Codex Skills: Amphetamine
+# Amphetamine: Codex Skills
 
-This repository contains Codex agent skills. The goal is to provide reliable, reusable workflows that help Codex make coherent decisions and operate consistently across projects.
+This repository defines Codex skills that enforce consistent, safe, and high-quality workflows. It is the source of truth for all skill behavior and packaging.
 
 ## Quick start
 
@@ -9,22 +9,67 @@ make list
 make install
 ```
 
-`make install` builds bundled artifacts and syncs the skills into `~/.codex/skills` (or the directory set by `SKILLS_HOME`). Do not edit `~/.codex/skills` directly; treat this repo as the source of truth.
+`make install` packages the skills and syncs them into `~/.codex/skills` (or `SKILLS_HOME`). Never edit `~/.codex/skills` directly.
 
 ## Requirements
 
-- Codex (configured to read skills from `~/.codex/skills`).
-- `make`, `rsync`, and `zip` on your PATH.
-- For specific skills, additional tools may be required (see each skill's `SKILL.md`).
+- Codex configured to read from `~/.codex/skills` (or `SKILLS_HOME`).
+- `make`, `rsync`, and `zip` available on your PATH.
+- Some skills require external tools (see each skill's `SKILL.md`).
+
+## Skill catalog
+
+Each skill lives in its own directory with a `SKILL.md` and optional `scripts/` or `references/`.
+All skills announce themselves by starting responses with `Using <skill-name>`.
+
+| Skill | What it does (short) |
+| --- | --- |
+| `brainstorm` | Requirements gathering and option exploration when asked or uncertainty exists. |
+| `implementation-plan` | Produces a TDD-driven plan file with exact steps, commands, and code. |
+| `execute-plan` | Executes a plan in chunks with TDD, verification, and structured commits. |
+| `git-stage-commit` | Stages changes and writes Conventional Commits in small, coherent batches. |
+| `worktree-setup` | Creates an isolated worktree + branch (scripted). |
+| `worktree-cleanup` | Removes worktree + branch after merge or discard (scripted). |
+| `github-pr-review` | Fetches PR code locally and hands off to `review`. No review logic. |
+| `review` | Quality gatekeeper: structured review with non-negotiable merge gates. |
+| `systematic-debugging` | Four-phase root-cause debugging flow for bugs and failures. |
+| `verification-before-completion` | Requires fresh verification evidence before completion claims. |
+| `testing-anti-patterns` | Prevents mock abuse and test-only production changes. |
+
+## Workflow (end-to-end)
+
+1. **Clarify requirements**
+   - Use `brainstorm` when requirements are unclear or alternatives are requested.
+2. **Set up isolation (when persisting plans)**
+   - `implementation-plan` uses `worktree-setup` before writing a plan file to disk.
+3. **Create an implementation plan**
+   - Use `implementation-plan` to generate a TDD-first plan file in `docs/plans/` inside the worktree.
+4. **Set up isolation for execution**
+   - `execute-plan` invokes `worktree-setup` to create a clean worktree/branch.
+5. **Implement in chunks**
+   - Follow the plan step-by-step with TDD.
+   - Invoke `testing-anti-patterns` when tests or mocks are involved.
+   - Use `verification-before-completion` before claiming any step is done.
+6. **Commit coherently**
+   - `execute-plan` uses `git-stage-commit` for Conventional Commits per chunk.
+7. **Handle failures correctly**
+   - Use `systematic-debugging` for test failures, bugs, and flaky CI.
+8. **Review PRs**
+   - `github-pr-review` only fetches the PR and provides base/head/diff context.
+   - `review` performs the full review and outputs the structured decision.
+9. **Clean up**
+   - `execute-plan` invokes `worktree-cleanup` after merge or discard.
 
 ## Repository layout
 
-- `github-pr-review/` — skill source: `SKILL.md`, scripts, and references.
-- `dist/` — packaged `.skill` artifacts produced by `make package`.
-- `AGENTS.md` — agent instructions for this repo.
-- `Makefile` — packaging and installation utilities.
+- `*/SKILL.md` - skill definitions and workflow rules.
+- `*/scripts/` - deterministic helpers referenced by skills.
+- `references/` - shared reference materials.
+- `dist/` - packaged `.skill` artifacts from `make package`.
+- `AGENTS.md` - repo-wide instructions for agents.
+- `Makefile` - packaging and install targets.
 
-## Common workflows
+## Common commands
 
 List skills:
 
@@ -32,13 +77,13 @@ List skills:
 make list
 ```
 
-Install skills locally (required after changes; runs `make package` first):
+Install skills locally (runs `make package` first):
 
 ```bash
 make install
 ```
 
-Build distributable skill bundles:
+Build distributable bundles:
 
 ```bash
 make package
@@ -50,7 +95,7 @@ Clean build artifacts:
 make clean
 ```
 
-Uninstall installed skills from your Codex skills directory:
+Uninstall skills from the Codex skills directory:
 
 ```bash
 make uninstall
@@ -58,16 +103,12 @@ make uninstall
 
 ## Development guidance
 
-- Keep `SKILL.md` and any scripts in the same skill folder aligned.
-- Prefer explicit, action-oriented instructions in skill docs.
-- Reuse templates and scripts already present in the skill directory.
-- After modifying a skill, run `make install` so Codex uses the updated version.
-
-## Skill catalog
-
-Current skills are listed via `make list`. Each skill includes its own documentation in its `SKILL.md` file with usage instructions and required inputs.
+- Keep `SKILL.md` and any supporting scripts aligned.
+- Prefer explicit defaults and objective checks over subjective guidance.
+- Update scripts when behavior becomes deterministic or repetitive.
+- After changes, run `make install` to sync.
 
 ## Troubleshooting
 
-- If Codex is not picking up changes, confirm `make install` completed and your `SKILLS_HOME` points to the correct directory.
-- If a skill depends on an external tool (e.g., `gh`), install that tool and re-run the workflow.
+- If Codex is not picking up changes, confirm `make install` completed and `SKILLS_HOME` is correct.
+- If a skill depends on an external tool (e.g., `gh`), install it and retry.

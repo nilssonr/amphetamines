@@ -35,6 +35,7 @@ Start every response with: "Using execute-plan".
    - If the skill is unavailable, stop and ask how to proceed.
 6. Execute each chunk with TDD (default) and commit.
    - Before claiming a chunk is complete or tests are passing, use the verification-before-completion skill to run and report fresh verification evidence.
+   - When writing or modifying tests or introducing mocks, invoke the testing-anti-patterns skill before proceeding.
 7. After completing the plan, ask the user to choose exactly one finalization path:
    1) Push branch to remote and open a PR using `gh pr create`, then use worktree-cleanup to clean up.
    2) Merge locally to `main` (or repo default branch) using rebase, then use worktree-cleanup to clean up.
