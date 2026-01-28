@@ -14,8 +14,8 @@ Start every response with: "Using worktree-setup" followed by a blank line.
    - Default change type to `feat` unless the request is clearly a bug fix (`fix`) or maintenance (`chore`).
    - Only ask a blocking question if you cannot infer a reasonable topic.
    - If the repo already defines a worktree path or naming convention, use it.
-1. Verify .gitignore contains `.worktrees/`.
-   - If missing, stop and ask the user to add it before proceeding.
+1. Ensure `.worktrees/` is present in `.gitignore`.
+   - If missing, add it before proceeding.
 2. Determine the base branch.
    - Prefer the remote default branch when available (e.g., `git symbolic-ref refs/remotes/origin/HEAD`).
    - If you cannot determine the base branch, stop and ask the user to specify it.
@@ -38,7 +38,6 @@ Start every response with: "Using worktree-setup" followed by a blank line.
 - Worktree path if the repo mandates one; otherwise default to `.worktrees/<topic>` under repo root.
 
 ## Hard stops
-- `.gitignore` missing `.worktrees/`.
 - Base branch cannot be determined.
 - Worktree path already exists and is not clearly reusable.
 - Worktree add fails.

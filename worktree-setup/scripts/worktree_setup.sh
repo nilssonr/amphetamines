@@ -50,12 +50,11 @@ fi
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 GITIGNORE_PATH="${REPO_ROOT}/.gitignore"
 if [[ ! -f "$GITIGNORE_PATH" ]]; then
-  echo "Missing .gitignore at repo root; add .worktrees/ before proceeding." >&2
-  exit 1
-fi
-if ! grep -Eq '^[[:space:]]*\.worktrees/?[[:space:]]*$' "$GITIGNORE_PATH"; then
-  echo ".gitignore does not include .worktrees/; add it before proceeding." >&2
-  exit 1
+  printf ".worktrees/\n" > "$GITIGNORE_PATH"
+else
+  if ! grep -Eq '^[[:space:]]*\.worktrees/?[[:space:]]*$' "$GITIGNORE_PATH"; then
+    printf "\n.worktrees/\n" >> "$GITIGNORE_PATH"
+  fi
 fi
 
 TOPIC_SLUG="$(slugify "$TOPIC")"
