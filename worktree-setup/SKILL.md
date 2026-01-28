@@ -14,28 +14,31 @@ Start every response with: "Using worktree-setup" followed by a blank line.
    - Default change type to `feat` unless the request is clearly a bug fix (`fix`) or maintenance (`chore`).
    - Only ask a blocking question if you cannot infer a reasonable topic.
    - If the repo already defines a worktree path or naming convention, use it.
-1. Determine the base branch.
+1. Verify .gitignore contains `.worktrees/`.
+   - If missing, stop and ask the user to add it before proceeding.
+2. Determine the base branch.
    - Prefer the remote default branch when available (e.g., `git symbolic-ref refs/remotes/origin/HEAD`).
    - If you cannot determine the base branch, stop and ask the user to specify it.
-2. Create the worktree + branch.
+3. Create the worktree + branch.
    - Prefer `scripts/worktree_setup.sh` for deterministic setup.
    - Fetch latest refs before creating the branch.
    - Derive a short branch name using Conventional Commit style: `<type>/<kebab-topic>`.
-   - Create a sibling worktree directory (e.g., `../wt-<topic>`), unless the repo already specifies a path.
+   - Create the worktree directory under `.worktrees/<topic>` in the repo root.
    - Run `git worktree add -b <branch> <worktree-path> <base-ref>`.
    - If the path exists or the command fails, stop and ask how to proceed.
-3. Working rule.
+4. Working rule.
    - Do all edits inside the new worktree; do not modify the main working tree.
-4. Output for handoff.
+5. Output for handoff.
    - Provide: base branch, worktree path, branch name.
 
 ## Required inputs
 - Task topic (infer if possible; only ask if you cannot infer).
 - Change type (infer; default to `feat` when unclear).
 - Base branch (or allow detection).
-- Worktree path if the repo mandates one.
+- Worktree path if the repo mandates one; otherwise default to `.worktrees/<topic>` under repo root.
 
 ## Hard stops
+- `.gitignore` missing `.worktrees/`.
 - Base branch cannot be determined.
 - Worktree path already exists and is not clearly reusable.
 - Worktree add fails.

@@ -9,7 +9,7 @@ Options:
   --type    Change type (feat|fix|chore)
   --topic   Short topic (used for branch and path)
   --base    Base branch or ref (default: detect origin/HEAD)
-  --path    Worktree path (default: ../wt-<topic>)
+  --path    Worktree path (default: <repo>/.worktrees/<topic>)
   --branch  Branch name (default: <type>/<topic>)
 USAGE
 }
@@ -47,6 +47,17 @@ if ! git rev-parse --show-toplevel >/dev/null 2>&1; then
   exit 1
 fi
 
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+GITIGNORE_PATH="${REPO_ROOT}/.gitignore"
+if [[ ! -f "$GITIGNORE_PATH" ]]; then
+  echo "Missing .gitignore at repo root; add .worktrees/ before proceeding." >&2
+  exit 1
+fi
+if ! grep -Eq '^[[:space:]]*\.worktrees/?[[:space:]]*$' "$GITIGNORE_PATH"; then
+  echo ".gitignore does not include .worktrees/; add it before proceeding." >&2
+  exit 1
+fi
+
 TOPIC_SLUG="$(slugify "$TOPIC")"
 if [[ -z "$BRANCH" ]]; then
   BRANCH="${TYPE}/${TOPIC_SLUG}"
@@ -62,13 +73,16 @@ if [[ -z "$BASE" ]]; then
 fi
 
 if [[ -z "$PATH_ARG" ]]; then
-  PATH_ARG="../wt-${TOPIC_SLUG}"
+  PATH_ARG="${REPO_ROOT}/.worktrees/${TOPIC_SLUG}"
 fi
 
 if [[ -e "$PATH_ARG" ]]; then
   echo "Worktree path already exists: $PATH_ARG" >&2
   exit 1
 fi
+
+# Ensure parent directory exists inside repo
+mkdir -p "${REPO_ROOT}/.worktrees"
 
 # Fetch latest refs for base resolution
 git fetch --all --prune
