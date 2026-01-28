@@ -15,7 +15,8 @@ Start every response with: "Using worktree-setup" followed by a blank line.
    - Only ask a blocking question if you cannot infer a reasonable topic.
    - If the repo already defines a worktree path or naming convention, use it.
 1. Ensure `.worktrees/` is present in `.gitignore`.
-   - If missing, add it before proceeding.
+   - If missing, add it and commit it (`chore: ignore .worktrees`) before proceeding.
+   - If `.gitignore` has uncommitted changes, stop and ask the user to resolve them first.
 2. Determine the base branch.
    - Prefer the remote default branch when available (e.g., `git symbolic-ref refs/remotes/origin/HEAD`).
    - If you cannot determine the base branch, stop and ask the user to specify it.
@@ -24,6 +25,7 @@ Start every response with: "Using worktree-setup" followed by a blank line.
    - Fetch latest refs before creating the branch.
    - Derive a short branch name using Conventional Commit style: `<type>/<kebab-topic>`.
    - Create the worktree directory under `.worktrees/<topic>` in the repo root.
+   - If `.gitignore` was modified in this flow, base the new branch on the local base branch so the commit is included.
    - Run `git worktree add -b <branch> <worktree-path> <base-ref>`.
    - If the path exists or the command fails, stop and ask how to proceed.
 4. Working rule.
