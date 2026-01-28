@@ -11,7 +11,7 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
 No completion claim without fresh verification evidence in this message.
 
 ## Workflow
-Start every response with: "Using verification-before-completion".
+Start every response with: "Using verification-before-completion" followed by a blank line.
 0. Identify the claim and required evidence.
    - What command proves the claim (tests, lint, build, migration, smoke check)?
    - If unclear from repo docs/config, ask for the exact command.

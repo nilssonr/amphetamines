@@ -8,7 +8,7 @@ description: Requirements gathering and option exploration only when the user ex
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using brainstorm".
+Start every response with: "Using brainstorm" followed by a blank line.
 0. Triage before brainstorming.
    - If the user provides explicit requirements, directives, or corrections, do **not** run a full brainstorm.
    - Instead, acknowledge the requirement and propose concrete edits or next steps in a concise response.

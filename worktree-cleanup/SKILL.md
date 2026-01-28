@@ -8,7 +8,7 @@ description: Remove a git worktree and delete its branch after work is completed
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using worktree-cleanup".
+Start every response with: "Using worktree-cleanup" followed by a blank line.
 0. Confirm cleanup intent and required inputs.
    - Require: worktree path, branch name, and outcome (`merged` or `discarded`).
    - If any required input is missing, stop and ask for it.

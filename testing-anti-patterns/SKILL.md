@@ -8,7 +8,7 @@ description: Use when writing or changing tests, adding mocks, or considering te
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using testing-anti-patterns".
+Start every response with: "Using testing-anti-patterns" followed by a blank line.
 
 0. Apply the iron laws before proceeding.
    - Never test mock behavior.

@@ -8,7 +8,7 @@ description: Turn brainstorming outcomes or rough ideas into thorough, step-by-s
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using implementation-plan".
+Start every response with: "Using implementation-plan" followed by a blank line.
 1. Restate the goal and confirmed constraints from the user or prior brainstorming output.
 2. Identify missing inputs that would change the plan (APIs, frameworks, data sources, success criteria).
 3. Preflight scan before questions: search the repository for answers (README, docs, config, templates, existing plans, and relevant code). Prefer `rg` to locate clues and cite file paths in your response.

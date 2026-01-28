@@ -8,7 +8,7 @@ description: Enforce test-first workflow (red-green-refactor) for features, bug 
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using test-driven-development".
+Start every response with: "Using test-driven-development" followed by a blank line.
 
 1. Confirm scope and how tests are run (repo command, script, or standard tool).
 2. Apply the TDD loop and enforce the gates below.

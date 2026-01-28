@@ -9,7 +9,7 @@ description: Acquire a GitHub PR locally from a PR URL, track temp workspace lif
 - GitHub PR URL (required).
 
 ## Workflow
-Start every response with: "Using github-pr-review".
+Start every response with: "Using github-pr-review" followed by a blank line.
 1. Resolve PR metadata.
    - Prefer GitHub CLI: `gh pr view <url> --json number,title,baseRefName,headRefName,headRepository,files,commits,author,createdAt,url`.
    - Always use `headRepository` (e.g., `headRepository.fullName`) for repo identity. Parse the PR URL to extract owner/repo/number as needed.
@@ -43,7 +43,7 @@ Cleanup: rm -rf <path1> \<newline><path2> ...
    - Record every temp path created and pass a single copy-pastable cleanup command to the review skill to include under **Required Actions**.
 
 ## Output format
-- Begin with a single line: "Using github-pr-review".
+- Begin with a single line: "Using github-pr-review", then a blank line.
 - Then output exactly the review skill's markdown block.
 - Do not add extra sections, summaries, or analysis outside the review skill output.
 - Ensure the cleanup `rm -rf` command appears as a bullet under **Required Actions** in the review output (only the exact paths created).

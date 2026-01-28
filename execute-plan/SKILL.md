@@ -8,7 +8,7 @@ description: Execute a stored implementation plan step-by-step. Use when the use
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using execute-plan".
+Start every response with: "Using execute-plan" followed by a blank line.
 0. Confirm explicit approval to execute a specific plan.
    - If the user has not explicitly approved execution, stop and ask for approval.
    - If multiple plans exist, ask which one to execute before proceeding.

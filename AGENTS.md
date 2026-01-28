@@ -13,7 +13,7 @@ This repo defines Codex skills that enforce consistent, safe, and high-quality w
 - Do not add extra docs outside of SKILL.md (no README/CHANGELOG/extra guides).
 
 ## Standard behavior for all skills
-- Every skill response must begin with: `Using <skill-name>`.
+- Every skill response must begin with: `Using <skill-name>`, followed by a blank line, then the content.
 - If a skill has an output format, follow it exactly.
 - Keep responses concise unless the skill explicitly requires a longer format.
 

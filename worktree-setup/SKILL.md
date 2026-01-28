@@ -8,7 +8,7 @@ description: Create isolated git worktrees and branches for tasks. Use when a wo
 Follow `references/interaction-policy.md` for response shape, question policy, and repo-first defaults.
 
 ## Workflow
-Start every response with: "Using worktree-setup".
+Start every response with: "Using worktree-setup" followed by a blank line.
 0. Confirm intent and context.
    - If a task/plan title is not provided, ask for a short topic and change type (feat/fix/chore).
    - If the repo already defines a worktree path or naming convention, use it.
