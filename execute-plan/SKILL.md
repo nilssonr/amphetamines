@@ -29,15 +29,14 @@ Follow `references/interaction-policy.md` for response shape, question policy, a
    - Prefer 1–3 plan steps per chunk.
    - Each chunk must be testable and end with a commit.
 5. Prepare an isolated worktree and branch before executing.
-   - Derive a short branch name from the plan title using Conventional Commit style: `<type>/<kebab-topic>` (e.g., `feat/user-registration`).
-   - Create a sibling worktree directory (e.g., `../wt-<plan-name>`).
-   - Create and check out the new branch inside the worktree.
-   - If worktree/branch creation fails, stop and ask the user how to proceed.
+   - Use the worktree-setup skill for setup.
+   - Capture and retain the outputs for handoff: base branch, worktree path, branch name.
+   - If the skill is unavailable, stop and ask how to proceed.
 6. Execute each chunk with TDD (default) and commit.
 7. After completing the plan, ask the user to choose exactly one finalization path:
-   1) Push branch to remote and open a PR using `gh pr create`, then delete local branch and worktree.
-   2) Merge locally to `main` (or repo default branch) using rebase, then delete branch and worktree.
-   3) Discard all changes, delete branch and worktree.
+   1) Push branch to remote and open a PR using `gh pr create`, then use worktree-cleanup to clean up.
+   2) Merge locally to `main` (or repo default branch) using rebase, then use worktree-cleanup to clean up.
+   3) Discard all changes, then use worktree-cleanup to clean up.
 
 ## TDD loop (default for code repositories)
 - Before writing production code, create or update tests for the chunk.
@@ -74,8 +73,9 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
   - Ask only one missing-info question at a time.
 
 ## Worktree + branch lifecycle
+- Use the worktree-setup skill to create the worktree/branch.
+- Use the worktree-cleanup skill to clean up the worktree/branch after finalization.
 - Always work inside the new worktree; do not edit the main working tree.
-- Default to `main` as the base branch. If the repo default is different, detect it and use that.
 - If the user selects PR:
   - Push the branch to `origin`.
   - Apply PR hygiene requirements (template + comprehensive description) before `gh pr create`.
@@ -83,13 +83,26 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
   - Check GitHub Actions/PR checks:
     - If checks exist, they must pass before any PR merge.
     - If checks are failing or pending, stop and ask whether to wait or to systematically debug.
-  - After confirmation, delete the local branch and remove the worktree.
 - If the user selects local merge:
   - Rebase the branch onto the default branch, then fast-forward the default branch to the rebased HEAD.
-  - After confirmation, delete the local branch and remove the worktree.
 - If the user selects discard:
-  - Remove the worktree and delete the local branch without merging.
-- Always remove the worktree directory after finalization, regardless of path.
+  - Skip PR/merge steps and proceed to cleanup.
+- After finalization, invoke worktree-cleanup for the chosen path.
+
+## Worktree handoff contract (required)
+When invoking worktree-setup, provide:
+- Setup: task topic, change type, base branch (or allow detection), and worktree path if mandated.
+
+When invoking worktree-cleanup, provide:
+- Cleanup: worktree path, branch name, and outcome (`merged` or `discarded`).
+
+Example handoff (cleanup):
+```
+Use worktree-cleanup with:
+- worktree path: ../wt-user-registration
+- branch name: feat/user-registration
+- outcome: merged
+```
 
 ## Hard stops (must ask the user)
 - Plan is missing, ambiguous, or contradicts repository reality.
@@ -97,13 +110,12 @@ For exceptions, run the best available validation step (lint, schema checks, `ku
 - Tests are already failing before changes (do not proceed until resolved).
 - The plan requires a framework, dependency, or tool not present in the repo.
 - A step would require skipping the TDD loop in a code repository.
-- Unable to determine default branch or worktree creation fails.
 - User requests PR merge while required checks are failing or pending.
 
 ## Systematic debug option
 If CI checks fail or are flaky:
 - Ask the user whether to start a systematic debug flow.
-- If a debug skill is available, use it; otherwise offer to create a dedicated skill for CI debugging.
+- Use the systematic-debugging skill.
 
 ## Plan drift handling
 If the plan needs to change to fit the repo:

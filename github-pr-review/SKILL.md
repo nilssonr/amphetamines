@@ -1,6 +1,6 @@
 ---
 name: github-pr-review
-description: Thorough GitHub pull request review from a PR URL, including diff analysis against the target base branch, code quality, potential bugs, critical errors, and consistency with the existing codebase.
+description: Acquire a GitHub PR locally from a PR URL, track temp workspace lifecycle, and invoke the review skill. Use when a PR URL is provided and code must be fetched for review.
 ---
 
 # GitHub PR Review
@@ -19,44 +19,32 @@ description: Thorough GitHub pull request review from a PR URL, including diff a
    - If the PR is from a fork, ensure remotes for both base and head repos; rely on `gh pr checkout` when possible.
    - Always work in a temporary directory under `/tmp` (e.g., `/tmp/gh-pr-review-<repo>-<number>`), and avoid using the user's existing working trees.
    - Prefer using `scripts/review_pr.sh` to create the temp workspace, clone the base repo, checkout the PR head, and generate a diff. Record every temp path created (workspace, diff files, diffstat, etc.).
-3. Inspect changed files and surrounding context.
-   - Read the patched files in the working tree and compare with the base where needed (`git show origin/<baseRefName>:path` or `git diff -U` for more context).
-   - Use `rg` to find related patterns, similar implementations, or required invariants.
-4. Review for correctness, quality, and consistency.
-   - Verify logic, edge cases, error handling, data validation, concurrency, security, and performance.
-   - Check for API/contract changes, backward compatibility, migrations, and configuration updates.
-   - Ensure style and architectural consistency with existing codebase patterns.
-   - Verify tests are updated or added where needed and note missing coverage.
-5. Produce findings in the required output format.
-6. Manual cleanup notes.
+3. Invoke the review skill for all analysis and findings.
+   - Provide the review skill with: PR title/description, base branch, head branch, diff path, changed files list, tests/CI results if available, ownership context if available, and release path if available.
+   - Do not perform review logic here; only facilitate access to code and context.
+
+Example handoff payload:
+```
+PR: <url>
+Title: <title>
+Description: <what/why/how tested/risk/rollback>
+Base branch: <baseRefName>
+Head branch: <headRefName>
+Diff path: /tmp/gh-pr-review-<repo>-<number>/diff.patch
+Changed files: <list or path>
+Tests/CI: <summary or link>
+Ownership: <CODEOWNERS/required reviewers>
+Release path: <feature flag/staged rollout/none>
+Cleanup: rm -rf <path1> \<newline><path2> ...
+```
+4. Cleanup instruction.
    - Never execute `rm -rf`.
-   - Record every temp path created and include them only in the "Manual cleanup" `rm -rf` line.
-   - Provide a copy-pastable `rm -rf` command that deletes only the exact paths created.
+   - Record every temp path created and pass a single copy-pastable cleanup command to the review skill to include under **Required Actions**.
 
 ## Output format
-- Start with a brief PR summary: title, base -> head, file count, and change size if available. Keep this summary unchanged.
-- Replace any table output with a per-finding structured block:
-
-  Finding <N>
-
-  - Severity: <Critical|High|Medium|Low|Info>
-  - Category: <Bug|Security|Performance|Correctness|Quality|Consistency|Tests|Docs>
-  - Location: <file path with line(s)>
-  - Issue: <short description>
-  - Evidence: <specific diff/context>
-  - Recommendation: <concrete fix>
-  - Suggested fix:
-
-    ```<language>
-    <small, localized snippet>
-    ```
-
-  Only include the "Suggested fix" block when a safe, minimal snippet is possible. If no safe snippet exists, omit the "Suggested fix" section.
-
-- If there are no findings, output "No issues found" and list what was reviewed plus any residual risks.
-- End with suggested tests or verification steps if applicable. Keep this section unchanged.
-- Add a "Manual cleanup" section that includes only a copy-pastable `rm -rf` command with backslash line breaks between paths. Do not run the command or list the paths separately.
-  - Use this exact shape (not in a code block): `rm -rf <path1> \` on the first line, then one `<path>` per line with trailing `\` until the last path.
+- Output MUST be exactly the review skill's markdown block.
+- Do not add extra sections, summaries, or analysis outside the review skill output.
+- Ensure the cleanup `rm -rf` command appears as a bullet under **Required Actions** in the review output (only the exact paths created).
 
 ## Reference
-- Use `references/review-checklist.md` to ensure comprehensive coverage.
+- Defer coverage guidance to the `review` skill.
